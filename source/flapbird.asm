@@ -1,5 +1,5 @@
 ;
-;  Flappy Bird for MSX : flapbird.asm
+;  Flappy Bird for MSX : flapbird.asm - rev.B
 ;
 ;  The annoying and pathetic bird flapping its wings in your MSX :)
 ;  
@@ -29,7 +29,7 @@
 ;
 ;  To build, use:
 ;
-;  $ pasmo -d -v FlappyBird.asm flapbird.rom
+;  "make rom" to build a ROM image or "make bin" to build a BIN file
 ;
 ;  Pasmo can be downloaded in http://pasmo.speccy.org/
 ;
@@ -42,11 +42,13 @@
 INCLUDE     ./library/msx1bios.asm
 INCLUDE     ./library/msx1variables.asm
 
+HTIMI:      equ 0xFD9F                  ; interrupção do VDP do MSX
+
 ;
 ;  Algumas constantes importantes utilizadas durante o jogo
 ;
-PAL:        equ  5                      ; 1/10s em 50Hz
-NTSC:       equ  6                      ; 1/10s em 60Hz
+PAL:        equ  5                      ; 1/10s em 50Hz (PAL-x)
+NTSC:       equ  6                      ; 1/10s em 60Hz (NTSC & PAL-M)
             
 GAP:        equ  6                      ; espaço entre os canos
             
@@ -96,7 +98,7 @@ if TARGET=0
             ;
             db "AB"                     ; identifica como ROM
             dw START                    ; endereço de execução
-            db "CW-01.1 Flappy Bird"    ; string de identificação
+            db "CW01B"                  ; string de identificação
 else
             ;
             ; para montar como BIN
@@ -113,7 +115,7 @@ START:      call INITVAR                ; inializa as variáveis em RAM
             
             call CWLOGO                 ; chama a animação da abertura
             
-            call GPLMENSA               ; exibe 
+            call GPLMENSA               ; exibe o aviso da GNU/GPL
             
 GAMELOOP:   ld hl,-1
             ld (SCORE),hl               ; zero o SCORE
@@ -371,6 +373,8 @@ DRAWPIPE3:  ld (hl),a                   ; coloca uma das linhas
 ;
 GAME:       call SNDBEEP                ; emito um beep
             
+            call WRITEFB
+            
             ld hl,BIRDY                 ; pássaro na altura inicial
             ld (hl),88                  ; (centro da tela)
             
@@ -390,39 +394,38 @@ GAME:       call SNDBEEP                ; emito um beep
             
             ld (PIPEFRAM),a             ; "zero" (com -1) o frame dos canos
             
+            ;
+            ; dica do Ricardo Bittencourt de pendurar a rotina de atuali-
+            ; zação da tela no hook HTIMI fazendo com que os dados com a
+            ; nova tela sejam enviados quando o VDP não estiver ocupado
+            ; desenhando a tela.
+            ;
+            
+            ld de,WRITEFB               ; rotina que atualiza a tela
+            
+            ld a,0xc9                   ; deveria ser CALL mas é RET
+            ld (HTIMI),a
+            
+            ld a,e                      ; 'ss' de WRITEFB
+            ld (HTIMI+1),a
+            
+            ld a,d                      ; 'tt' de WRITEFB
+            ld (HTIMI+2),a
+            
+            ld a,0xc9                   ; RET (outro RET)
+            ld (HTIMI+3),a
+            
 GAME0:      ld hl,JIFFY
             ld (hl),0                   ; zero o temporizador
-            
-            call ROTDECOR               ; rotaciono a decoração
-            
-            call DRAWBIRD               ; desenho o pássaro
-            
+                        
             call ROTPIPE                ; rotaciono os canos
             
             call UPDATEFB               ; atualizo o framebuffer
             
-            di                          ; desligo as interrupções
+            call DRAWBIRD               ; desenho o pássaro
             
-            ld a,0x40                   ; seto a VRAM para escrita
-            out (0x99),a                ; porta de controle do VDP
+            call ROTDECOR               ; rotaciono a decoração
             
-            ld a,0x58                   ; 0x1840 (6144+64) & 0x4000
-            out (0x99),a                ; porta de controle do VDP
-            
-            ld c,0x98                   ; porta de dados do VDP
-            ld hl,FRMBUF1               ; endereço inicial
-            
-            ld b,128                    ; serão 640 bytes!
-            
-            otir                        ; jogo 128 bytes pro VDP
-            otir                        ; jogo 256 bytes pro VDP
-            otir                        ; jogo 256 bytes pro VDP
-            
-            ei                          ; religo as interrupções
-            
-            ;
-            ; leio o teclado
-            ;
             ld a,(NEWKEY+8)             ; linha 8 da matriz de teclado
             bit 0,a                     ; barra de espaços pressionada?
             jp nz,GAME5                 ; senão, vou pra GAME6
@@ -478,19 +481,22 @@ GAME7:      add hl,de                   ; e multiplico por 4
             cp 0
             jr nz,GAME7
             
-            ld de,FRMBUF1+9-64          ; 10 ou 9?
+            ld de,6144+9                ; 10 ou 9?
             add hl,de
-            
-            ld a,(hl)
+            call RDVRM                  ; vejo na VRAM o que tem na
+                                        ; frente do pássaro
             cp 139
             jp nc,GAMEOVER
             
             ld de,32
             add hl,de
+            call RDVRM                  ; vejo na posição abaixo.
             
-            ld a,(hl)
             cp 139
             jp nc,GAMEOVER
+            
+            ld a,0xcd                   ; habilito a atualização da tela
+            ld (HTIMI),a                ; por interrupção, roda 1x e só!
             
             ld hl,VDPCICLE1
             ld b,(hl)
@@ -499,12 +505,12 @@ GAME7:      add hl,de                   ; e multiplico por 4
             jp GAME0
             
 GAME9:      inc a                       ; hora de incrementar :-)
-            ret                         ; fora do lugar, não remover!
+            ret                         ; está fora do lugar, não remover!
 
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  fim do jogo - OK
+;  *  fim do jogo
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -608,7 +614,7 @@ GAMEOVER6:  ld a,162-3
 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  mensagem da GPL - OK
+;  *  mensagem da GPL
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -645,7 +651,7 @@ GPLMENSA1:  push de                     ; salva DE por enquanto
             
             pop de                      ; recupero DE
             
-            jr GPLMENSAN                ; volto
+            jr GPLMENSAN                ; volto para a posição inicial
             
 GPLMENSA2:  ld a,(VDPCICLE5)            ; A=x
             add a,a                     ; A=A+A
@@ -661,7 +667,7 @@ GPLMENSA2:  ld a,(VDPCICLE5)            ; A=x
             ret                         ; sai da rotina
             
 GPLMENSA3:  db 0,0,0,0,0,0,0,0,0,0,0
-            db "FLAPPY BIRD for MSX",0
+            db "FLAPPY BIRD for MSX rev.B",0
             db "(c)2014 by Crunchworks",0
             db 0
             db "This program is free soft-",0
@@ -689,7 +695,7 @@ GPLMENSA3:  db 0,0,0,0,0,0,0,0,0,0,0
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  inicializa o ambiente - OK
+;  *  inicializa o ambiente
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -778,7 +784,7 @@ INITENV0:   xor a                   ; A=0
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  inicializa as variáveis do programa - OK
+;  *  inicializa as variáveis do programa
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -795,12 +801,13 @@ INITVAR:    xor a                       ; zero A
             
             ld (RINGRING),a             ; flag do som de pontuação
             
-            ld hl,0                     ; recorde do dia
+            ld hl,0                     ; recorde do dia (sempre zero)
             ld (HISCORE),hl
             
-                                        ; temporização para NTSC
+                                        ; temporização para NTSC e PAL-M
             ld a,NTSC
             ld (VDPCICLE1),a            ; a princípio 6 -- 1/10s
+            
             ld a,NTSC*10
             ld (VDPCICLE5),a            ; a princípio 60 - 1s
             
@@ -829,7 +836,7 @@ INITVAR:    xor a                       ; zero A
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  rotina que cuida do som da pontuação - OK
+;  *  rotina que cuida do som da pontuação
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -884,7 +891,7 @@ PLAYRING0:  ld b,a                      ; salva o volume
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  prepara a tela e inicializa o framebuffer principal - OK/OK
+;  *  prepara a tela e inicializa o framebuffer principal
 ;  *
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1009,7 +1016,7 @@ PREPSCR3:   db 190                  ; "Hi"
 ;  *
 ;  *  imprime a pontuação, adaptado da rotina de escrita de números de 16-bit
 ;  *  orginal de Milos "baze" Bazelides <baze_at_baze_au_com> e disponível em:
-;  *  http://baze.au.com/misc/z80bits.html - OK
+;  *  http://baze.au.com/misc/z80bits.html
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1056,7 +1063,7 @@ PRNTSCOR2:  ld bc,-10000
             ld c,b
             
 PRNTSCOR3:  ld a,176                    ; o caracter anterior ao '0'
-
+            
 PRNTSCOR4:  inc a
             add hl,bc
             jr c,PRNTSCOR4
@@ -1070,7 +1077,7 @@ PRNTSCOR4:  inc a
 ;  *
 ;  *  gerador de números pseudo-aleatórios levemente adaptada do código ori-
 ;  *  ginal de Milos "baze" Bazelides <baze_at_baze_au_com> e disponível em:
-;  *  http://baze.au.com/misc/z80bits.html - OK
+;  *  http://baze.au.com/misc/z80bits.html
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1088,7 +1095,7 @@ RANDOM:     ld a,(BIRDY)                ; uma das seed é o BIRDY!
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  faz a rotação de 2 em 2 pixels no padrão do solo. - OK
+;  *  faz a rotação de 2 em 2 pixels no padrão do solo.
 ;  *
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1207,7 +1214,7 @@ ROTPIPE2:   ld a,(PIPEFRAM)             ; verifico o quadro do cano
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
 ;  *  beep personalizado usado para indicar as opções selecionadas no jogo
-;  *  -- um sol, na quinta oitava -- play "o5g" - OK
+;  *  -- um sol, na quinta oitava -- play "o5g"
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1243,7 +1250,7 @@ SNDBEEP0:   ld e,a
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  a tela de abertura do jogo - OK
+;  *  a tela de abertura do jogo
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1300,7 +1307,7 @@ STARTSCR3:  INCBIN ./binary/screen.inc
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
 ;  *  habilita o modo R800 ROM se eu estiver rodando em um turbo R, rotina de
-;  *  Timo Nyyrikki -- http://www.msx.org/wiki/R800_Programming#BIOS_routines - OK
+;  *  Timo Nyyrikki -- http://www.msx.org/wiki/R800_Programming#BIOS_routines
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1311,7 +1318,6 @@ TURBOMODE:  ld a,(0x002d)               ; byte de ID do MSX
             ld a,(0x0180)               ; rotina CHGCPU
             cp 0C3h
             
-            ;ld a,0x82                  ; modo R800 DRAM
             ld a,0x81                   ; modo R800 ROM
             
             call z,0x0180
@@ -1322,7 +1328,7 @@ TURBOMODE:  ld a,(0x002d)               ; byte de ID do MSX
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
 ;  *  rotaciona tela do primeiro framebuffer, completa com um trecho do segun-
-;  *  do framebuffer - OK
+;  *  do framebuffer
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1373,7 +1379,7 @@ UPDATEFB1:  push af                     ; salvo A por enquanto
 ;
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;  *
-;  *  gera uma espera de 'B' ciclos do VDP (não se esqueça de zerar JIFFY) - OK
+;  *  gera uma espera de 'B' ciclos do VDP (não se esqueça de zerar JIFFY)
 ;  * 
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
@@ -1381,6 +1387,23 @@ WAITASEC:   ld a,(JIFFY)
             cp b
             ret z                       ; sai da rotina
             jr WAITASEC
+
+;
+;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;  *
+;  *  atualiza o framebuffer - rotina que penduro no hook HTIMI
+;  * 
+;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+;
+WRITEFB:    ld bc,640
+            ld de,6144+64
+            ld hl,FRMBUF1
+            call LDIRVM
+            
+            ld a,0xc9                   ; desabilito a atualização da
+            ld (HTIMI),a                ; tela por interrupção
+            
+            ret
 
 ;
 ;  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
