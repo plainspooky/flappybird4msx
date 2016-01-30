@@ -7,8 +7,10 @@
 ;
 startScreen:
             proc
-
-            local drawScreen,screenData
+            local drawScreen
+            local waitPressFire
+            local changeToNextLine
+            local screenData
 
             call birdOff                ; removo o pássaro da tela
 
@@ -59,7 +61,7 @@ waitPressFire:
             call GTTRIG                 ; lê o botão 1 do joystick 0
 
             or h                        ; junta as duas leituras
-            
+
             cp 255                      ; ainda é 255?
             ret z                       ; sai da laço
 
@@ -70,6 +72,6 @@ changeToNextLine:
             ret
 
 screenData:
-            incbin graphics/screen.inc
+            incbin "gfx/screen.inc"
 
             endp

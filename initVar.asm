@@ -19,10 +19,10 @@ vdpCycle1:  equ ramArea+12
 vdpCycle5:  equ ramArea+13
 rndSeed:    equ ramArea+14
 birdBuffer: equ ramArea+15              ; coordenadas do pássaro
-frameBuff3: equ birdBuffer+32           ; o 3º framebuffer (64 bytes)
-frameBuff2: equ frameBuff3+64           ; o 2º framebuffer (140 bytes)
-frameBuff1: equ frameBuff2+140          ; o 1º framebuffer (640 bytes)
-videoData:  equ frameBuff3
+framebuff3: equ birdBuffer+32           ; o 3º framebuffer (64 bytes)
+framebuff2: equ framebuff3+64           ; o 2º framebuffer (140 bytes)
+framebuff1: equ framebuff2+140          ; o 1º framebuffer (640 bytes)
+videoData:  equ framebuff3
 
 initVar:
             proc

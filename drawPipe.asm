@@ -8,12 +8,15 @@
 ;
 drawPipe:
             proc
+            local drawPipeLoop
+
             xor a
-            ld de,frameBuff2            ; endereço do segundo framebuffer, vou
+            ld de,framebuff2            ; endereço do segundo framebuffer, vou
                                         ; desenhar um cano que vai do início ao
                                         ; final da tela
 
-drawPipeLoop:  ld hl,pipeData              ; endereço do padrão do cano
+drawPipeLoop:
+            ld hl,pipeData              ; endereço do padrão do cano
             ld bc,7                     ; comprimento da cópia
             ldir                        ; 8?
 
@@ -21,19 +24,21 @@ drawPipeLoop:  ld hl,pipeData              ; endereço do padrão do cano
             cp 20
             jr nz,drawPipeLoop             ; se A<20, ir para DRAWPIPE0
 
-            ld hl,frameBuff2               ; aponta para o início
+            ld hl,framebuff2               ; aponta para o início
 
             ld a,130                    ; 130,131 : linhas ciano
                                         ; 132,133 : linhas azul
 
-DRAWPIPE1:  call DRAWPIPE3
+DRAWPIPE1:
+            call DRAWPIPE3
             inc a
             cp 132
             jr nz,DRAWPIPE1             ; se A!=132, ir para DRAWPIPE1
 
-            ld hl,frameBuff2+18*7          ; as duas últimas linhas
+            ld hl,framebuff2+18*7          ; as duas últimas linhas
 
-DRAWPIPE2:  call DRAWPIPE3
+DRAWPIPE2:
+            call DRAWPIPE3
             inc a
             cp 134
             jr nz,DRAWPIPE2             ; se A!=133, ir para DRAWPIPE2
@@ -46,7 +51,7 @@ DRAWPIPE2:  call DRAWPIPE3
 
             ld b,0                      ; limpo a outra parte, vai que...
 
-            ld hl,table7                ; TABLE7
+            ld hl,tableSeven            ; TABLE7
             add hl,bc                   ; TABLE7 = TABLE7 + BC
 
             ld a,(hl)
@@ -57,9 +62,9 @@ DRAWPIPE2:  call DRAWPIPE3
             ld h,b
             ld l,c                      ; ld HL,BC :-(
 
-            ld de,frameBuff2
+            ld de,framebuff2
             add hl,de
-            ex de,hl                    ; frameBuff2 acrescido do tamanho e em DE!
+            ex de,hl                    ; framebuff2 acrescido do tamanho e em DE!
 
             ld hl,holeData              ; dados do padrão entre os canos
 
@@ -68,7 +73,8 @@ DRAWPIPE2:  call DRAWPIPE3
 
             ret
 
-DRAWPIPE3:  ld (hl),a                   ; coloca uma das linhas
+DRAWPIPE3:
+            ld (hl),a                   ; coloca uma das linhas
             ld de,5
             add hl,de                   ; avança mais 5
             ld (hl),a
@@ -80,7 +86,7 @@ DRAWPIPE3:  ld (hl),a                   ; coloca uma das linhas
 ;
 ;           Tabuada de 7, porque o Z80 só sabe somar! :-(
 ;
-table7:
+tableSeven:
             dw 14,21,28,35,42,49,56,63,70
 
 ;

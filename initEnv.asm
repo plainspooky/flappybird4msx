@@ -7,10 +7,11 @@
 ;
 initEnv:
             proc
-
             local palAdjust
             local noPalAdjust
-            local charPatterns, charPatterns, spritePatterns
+            local charPatterns
+            local charPatterns
+            local spritePatterns
 
             call turboMode          ; é um turbo R? pare de sofrer!
 
@@ -93,12 +94,12 @@ noPalAdjust:
             ret                     ; sai da rotina
 
 charPatterns:
-            incbin "graphics/patterns.inc"
+            incbin "gfx/patterns.inc"
 
 charAttributes:
-            incbin "graphics/attributes.inc"
+            incbin "gfx/attributes.inc"
 
 spritePatterns:
-            incbin "graphics/sprites.inc"
+            incbin "gfx/sprites.inc"
 
             endp

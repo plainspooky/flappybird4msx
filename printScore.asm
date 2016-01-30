@@ -9,16 +9,20 @@
 ;
 printScore:
             proc
+            local printHiScore
+
             ld hl,(score)               ; recupero o valor atual da pontuação
-            inc hl                      ; incremento a pontuação
+        rept 5
+            inc hl                      ; incremento a pontuação em +5
+        endm
             ld (score),hl               ; armazeno a pontuação
-            ld de,frameBuff3            ; área temporária para escrever
+            ld de,framebuff3            ; área temporária para escrever
 
             call printNumber            ; escrevo os números lá
 
             ld bc,5                     ; até 5 dígitos
             ld de,6144+7                ; posição na tela
-            ld hl,frameBuff3
+            ld hl,framebuff3
             call LDIRVM                 ; atualizo a pontuação na tela
 
             ld hl,(hiScore)             ; leio o recorde
@@ -29,12 +33,12 @@ printScore:
             ld (hiScore),de             ; armazeno o novo recorde
 printHiScore:
             ld hl,(hiScore)
-            ld de,frameBuff3               ; área temporária para escrever
+            ld de,framebuff3               ; área temporária para escrever
             call printNumber
 
             ld bc,5                     ; até 5 dígitos
             ld de,6144+24               ; posição na tela
-            ld hl,frameBuff3
+            ld hl,framebuff3
             call LDIRVM                 ; atualizo o recorde na tela
 
             ld a,11
@@ -70,6 +74,6 @@ formatDigitLoop:
             sbc hl,bc
             ld (de),a
             inc de
-            ret
+            ret                         ; sai da rotina
 
             endp

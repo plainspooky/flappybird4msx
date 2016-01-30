@@ -11,6 +11,9 @@ cwLogoPrt2: equ videoData+3             ; a segunda linha na tela
 
 cwLogo:
             proc
+            local cwLogoWait
+            local cwLogoData
+
             ld hl,0
             ld (cwLogoPrt1),hl          ; a primeira linha na tela
             ld (cwLogoPrt2),hl          ; a primeira linha na tela

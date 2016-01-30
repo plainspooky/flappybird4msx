@@ -7,8 +7,9 @@
 ;
 rotatePipe:
             proc
-
-            local drawNewPipe,drawAPipe,drawAGap
+            local drawNewPipe
+            local drawAPipe
+            local drawAGap
 
             ld a,(pipeGap)
             cp GAP

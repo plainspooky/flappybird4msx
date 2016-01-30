@@ -6,8 +6,16 @@
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
 game:
+            proc
+            local gameStart
+            local gameDownBird
+            local gameUpBird
+            local checkCollision
+            local gameLittleMulti
+            local dirtyIncrement
+
             call soundBeep              ; emito um beep
-            call writeFrameBuffer
+            call writeFramebuffer
 
             ld hl,birdY                 ; pássaro na altura inicial
             ld (hl),88                  ; (centro da tela)
@@ -30,10 +38,10 @@ game:
             ; desenhando a tela.
             ;
 
-            ld de,writeFrameBuffer      ; rotina que atualiza a tela
-            ld a,e                      ; 'ss' de writeFrameBuffer
+            ld de,writeFramebuffer      ; rotina que atualiza a tela
+            ld a,e                      ; 'ss' de writeFramebuffer
             ld (HTIMI+1),a
-            ld a,d                      ; 'tt' de writeFrameBuffer
+            ld a,d                      ; 'tt' de writeFramebuffer
             ld (HTIMI+2),a
             ld a,0xc9                   ; RET
             ld (HTIMI),a
@@ -43,12 +51,8 @@ gameStart:
             ld hl,JIFFY
             ld (hl),0                   ; zero o temporizador
 
-            ;ld hl,6145
-            ;call random
-            ;call WRTVRM
-
             call rotatePipe             ; rotaciono os canos
-            call updateFrameBuffer      ; atualizo o framebuffer
+            call updateFramebuffer      ; atualizo o framebuffer
             call drawBird               ; desenho o pássaro
             call rotateDecoration       ; rotaciono a decoração
 
@@ -97,9 +101,9 @@ checkCollision:
             cp 168
             jp nc,birdOnGround          ; bati no chão, fim do jogo
 
-            ld a,(frameBuff1+11)           ; verifico se em (11,0) há um caracter
+            ld a,(framebuff1+11)        ; verifico se em (11,0) há um caracter
             cp 143                      ; específico de cano (143)
-            call z,printScore             ; Se for, é hora de pontuar.
+            call z,printScore           ; Se for, é hora de pontuar.
 
             ld a,(ringRing)             ; verifica se é hora momento de to-
             cp 0                        ; car a campainha da pontuação
@@ -145,3 +149,5 @@ gameLittleMulti:
 dirtyIncrement:
             inc a                       ; hora de incrementar :-)
             ret                         ; está fora do lugar, não remover!
+
+            endp

@@ -6,14 +6,18 @@
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
 birdOnGround:
-            proc
-
-            local gameOverSOund, fallingBird, gameOverMessage, gameOverWait, gameOverNewLine, gameOverWait
-
             ld a,162-3
             ld (birdY),a                ; resolvo o problema quando do
 
 gameOver:
+            proc
+            local gameOverSound
+            local fallingBird
+            local gameOverMessage
+            local gameOverWait
+            local gameOverNewLine
+            local gameOverWait
+
             ld a,7
             ld e,7
             call WRTPSG                 ; sound 7,7
@@ -38,7 +42,7 @@ gameOverSound:
             ld a,e
 
             cp -1                       ; se não for <0 fico no laço
-            jr nz, gameOverSound
+            jr nz,gameOverSound
 
 fallingBird:
             ld hl,JIFFY

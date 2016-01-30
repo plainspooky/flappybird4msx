@@ -92,27 +92,27 @@ prepareSky:
             ld hl,6144+4*32         ; tabela de nomes
             call FILVRM             ; preenche a tela
 
-                                    ; Alimento frameBuff1
+                                    ; Alimento framebuff1
 
             ld bc,32*20             ; tamanho da cópia (640 bytes)
-            ld de,frameBuff1        ; endereço de frameBuff1
+            ld de,framebuff1        ; endereço de framebuff1
             ld hl,6144+2*32         ; posição da tela
-            call LDIRMV             ; alimento frameBuff1 já inicializado
+            call LDIRMV             ; alimento framebuff1 já inicializado
 
-                                    ; Alimento frameBuff2
+                                    ; Alimento framebuff2
 
             ld bc,14                ; para as duas primeiras linhas de
-            ld de,frameBuff2        ; frameBuff2
+            ld de,framebuff2        ; framebuff2
             ld hl,6144+3*32-7
             call LDIRMV
 
             ld bc,16*7              ; para as linhas 3 até 18 de
-            ld de,frameBuff2+14     ; frameBuff2
+            ld de,framebuff2+14     ; framebuff2
             ld hl,6144+4*32
             call LDIRMV
 
             ld bc,14                ; para as duas últimas linhas de
-            ld de,frameBuff2+140-14 ; frameBuff2
+            ld de,framebuff2+140-14 ; framebuff2
             ld hl,6144+21*32-7
             call LDIRMV
 

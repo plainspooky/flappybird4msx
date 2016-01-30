@@ -9,9 +9,11 @@ gplBuffer:  equ videoData
 
 gplMensa:
             proc
+            public gplMensaWait
+            local gplMensaStart
+            local gplMensaPrint
+            local gplMensaNewLine
 
-            local gplMensaStart, gplMensaPrint, gplMensaNewLine
-            
             ld de,gplMensaText-1        ; emdereço da mensagem, ou quase
 
 gplMensaStart:

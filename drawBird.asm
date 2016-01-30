@@ -6,10 +6,15 @@
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
 drawBird:
+            proc
+            local drawBirdNext
+
             ld a,(birdY)                ; pego a posição da ave para colocar na tela
 
-            dec a                       ; diminuo em 1, um bug notório da tabela de sprites do TMS99x8
-            ld b,a                      ; armazeno a posição em B
+            dec a                       ; diminuo em 1, um bug notório da tabela de
+                                        ; sprites do TMS99x8 armazeno a posição em B
+
+            ld b,a
 
             ld a,(birdFrame)            ; pego o quadro correspondente a posição do pássaro
 
@@ -42,12 +47,12 @@ drawBirdNext:
 
             inc a
             cp 4
-            jr nz,drawBirdNext             ; se A!=4, ir para drawBird0
+            jr nz,drawBirdNext          ; se A!=4, ir para drawBird0
 
             ld a,(birdFrame)
             inc a
             and 3
-            ld (birdFrame),a                ; atualizo o frame, a animação tem 4
+            ld (birdFrame),a            ; atualizo o frame, a animação tem 4
 
             ld bc,16
             ld de,6912
@@ -55,3 +60,5 @@ drawBirdNext:
             call LDIRVM                 ; jogo estes 16 bytes na VRAM
 
             ret                         ; sai da rotina
+
+            endp

@@ -8,6 +8,10 @@
 ;
 turboMode:
             proc
+            local CHGCPU
+
+CHGCPU:     equ 0x0180
+
             ld a,(0x002d)               ; byte de ID do MSX
             cp 3                        ; é turbo R?
             ret nz                      ; não é um turbo R, vá embora
@@ -16,4 +20,5 @@ turboMode:
             ld a,0x81                   ; modo R800 ROM
             call z,CHGCPU
             ret                         ; sai da rotina
+
             endp
