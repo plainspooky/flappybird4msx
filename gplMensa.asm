@@ -65,7 +65,8 @@ gplMensaWait:
 
 gplMensaText:
             db 0,0,0,0,0,0,0,0,0,0,0
-            db "FLAPPY BIRD for MSX rev.D",0
+            db "FLAPPY BIRD for MSX "
+            db 48+__VERSION,".",64+__RELEASE,0
             db "(c)2014-2016 by Crunchworks",0
             db 0
             db "it and/or modify it under",0

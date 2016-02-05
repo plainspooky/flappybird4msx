@@ -7,6 +7,7 @@
 ;
 drawBird:
             proc
+
             local drawBirdNext
 
             ld a,(birdY)                ; pego a posição da ave para colocar na tela

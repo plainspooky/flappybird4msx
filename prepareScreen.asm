@@ -12,7 +12,8 @@ prepareScreen:
             local prepareScenario
             local prepareSky
             local drawMultiples
-            local corners, hiScoreText
+            local corners
+            local hiScoreText
 
             ld a,15                 ; BRANCO
             ld (FORCLR),a           ; cor da frente em branco

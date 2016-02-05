@@ -1,27 +1,34 @@
 CAT=cat
 ECHO=echo
 EMULATOR=openmsx
-INFILE=flappybird.asm
+MAINFILE=main.asm
 OUTFILE=flapbird
 PASMO=pasmo
 RM=rm -f
-MACHINE=''
+MACHINE=
 
-.PHONY: default clean superclean
+.PHONY: bload clean default rom superclean test
 
 default:
-	${PASMO} -d \
-             -v \
-             -1 \
-	         --err \
-             ${INFILE} ${OUTFILE}.rom |\
+	make rom
+
+rom:
+	${PASMO} -d -v -1 --err \
+			 --equ "TARGET=0" \
+             ${MAINFILE} ${OUTFILE}.rom |\
         	 tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
+bload:
+	${PASMO} -d -v -1 --err \
+			 --equ "TARGET=1" \
+		     ${MAINFILE} ${OUTFILE}.bin |\
+			 tee ${OUTFILE}.log 2> ${OUTFILE}.err
+
 test:
-	${EMULATOR} ${OUTFILE}.rom
+	${EMULATOR} ${MACHINE} ${OUTFILE}.rom
 
 clean:
-	${RM} ${OUTFILE}.rom
+	${RM} -f ${OUTFILE}.bin ${OUTFILE}.rom 2>/dev/null
 
 superclean:
-	${RM} -f ${OUTFILE}.rom ${OUTFILE}.log ${OUTPUT}.err
+	${RM} -f ${OUTFILE}.bin ${OUTFILE}.err ${OUTFILE}.log ${OUTFILE}.rom 2>/dev/null

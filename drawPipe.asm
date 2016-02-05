@@ -8,7 +8,12 @@
 ;
 drawPipe:
             proc
+
             local drawPipeLoop
+            ; ...
+            local tableSeven
+            local pipeData
+            local holeData
 
             xor a
             ld de,framebuff2            ; endereço do segundo framebuffer, vou
@@ -18,7 +23,7 @@ drawPipe:
 drawPipeLoop:
             ld hl,pipeData              ; endereço do padrão do cano
             ld bc,7                     ; comprimento da cópia
-            ldir                        ; 8?
+            ldir
 
             inc a
             cp 20
@@ -29,16 +34,18 @@ drawPipeLoop:
             ld a,130                    ; 130,131 : linhas ciano
                                         ; 132,133 : linhas azul
 
+drawSkyPattern:
 DRAWPIPE1:
-            call DRAWPIPE3
+            call drawEntireLine
             inc a
             cp 132
-            jr nz,DRAWPIPE1             ; se A!=132, ir para DRAWPIPE1
+            jr nz,drawSkyPattern
+            ;jr nz,DRAWPIPE1             ; se A!=132, ir para DRAWPIPE1
 
             ld hl,framebuff2+18*7          ; as duas últimas linhas
 
 DRAWPIPE2:
-            call DRAWPIPE3
+            call drawEntireLine
             inc a
             cp 134
             jr nz,DRAWPIPE2             ; se A!=133, ir para DRAWPIPE2
@@ -71,9 +78,9 @@ DRAWPIPE2:
             ld bc,70                    ; tamanho do bloco 7x10
             ldir                        ; copio o bloco
 
-            ret
+            ret                         ; sai da rotina
 
-DRAWPIPE3:
+drawEntireLine:
             ld (hl),a                   ; coloca uma das linhas
             ld de,5
             add hl,de                   ; avança mais 5
@@ -81,8 +88,8 @@ DRAWPIPE3:
             inc hl
             ld (hl),a
             inc hl
-            ret                         ; sai da rotina
-            endp
+            ret
+
 ;
 ;           Tabuada de 7, porque o Z80 só sabe somar! :-(
 ;
@@ -110,3 +117,5 @@ holeData:
             db 128,128,128,128,128,128,128  ; row 7
             db 138,152,153,154,155,139,128  ; row 8
             db 136,156,157,158,159,137,128  ; row 9 (canos de baixo)
+
+            endp

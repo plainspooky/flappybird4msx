@@ -1,6 +1,5 @@
 ;
-;  Flappy Bird for MSX : flapbird.asm - rev.D
-;
+;  Flappy Bird for MSX -- version 1.4;
 ;  The annoying and pathetic bird flapping on your MSX :)
 ;
 ;  Copyright 2014-16 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
@@ -20,23 +19,16 @@
 ;  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 ;  MA 02110-1301, USA.
 ;
-
+__VERSION:  equ 1
+__RELEASE:  equ 4
 ;
-;  Flappy Bird is a original game released in 2013 by .GEARS
+;  >>>  Flappy Bird is a original game released in 2013 by .GEARS  <<<
 ;
-
-;
-;  Comments bellow will be in portuguese. My peace of mind needs that!
-;
-
             include "library/msx1bios.asm"
             include "library/msx1variables.asm"
             include "library/msx1hooks.asm"
 
-;
-;  Constantes utilizadas durante o jogo
-;
-PAL:        equ  5                      ; 1/10s em 50Hz (PAL-x)
+PAL:        equ  5                      ; 1/10s em 50Hz (PAL-B/G/N)
 NTSC:       equ  6                      ; 1/10s em 60Hz (NTSC & PAL-M)
 GAP:        equ  6                      ; espaço entre os canos
 VOLUME      equ 11                      ; volume da campanhia dos pontos
@@ -51,7 +43,9 @@ ramArea:    equ 0xe000                  ; inicio da área de variáveis
             org romArea
             db "AB"                     ; identifica como ROM
             dw startCode                ; endereço de execução
-            db "CW01-D"                 ; string de identificação
+            db "CW01"                   ; string de identificação
+            db __VERSION+48
+            db __RELEASE+64
             ds 6,0
 else
 makeBLOAD:

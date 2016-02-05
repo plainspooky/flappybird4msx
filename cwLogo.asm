@@ -11,6 +11,7 @@ cwLogoPrt2: equ videoData+3             ; a segunda linha na tela
 
 cwLogo:
             proc
+
             local cwLogoWait
             local cwLogoData
 
@@ -82,6 +83,7 @@ cwLogoWait:
             ld hl,6144+13*32            ; posição inicial
             call FILVRM
 
+cwEndRingLoop:
             jp gplMensaWait             ; economizo meu código :)
 
 cwLogoData:

@@ -105,8 +105,8 @@ checkCollision:
             cp 143                      ; específico de cano (143)
             call z,printScore           ; Se for, é hora de pontuar.
 
-            ld a,(ringRing)             ; verifica se é hora momento de to-
-            cp 0                        ; car a campainha da pontuação
+            ld a,(ringRing)             ; verifica se é hora momento de tocar
+            cp 0                        ; a campainha da pontuação
             call nz,playRing
 
             ld a,(birdY)                ; leio a altura atual do pássaro

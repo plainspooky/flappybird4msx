@@ -41,7 +41,7 @@ printHiScore:
             ld hl,framebuff3
             call LDIRVM                 ; atualizo o recorde na tela
 
-            ld a,11
+            ld a,12
             ld (ringRing),a             ; habilita o som da pontuação
 
             ret                         ; sai da rotina

@@ -1,4 +1,4 @@
-FLAPPY BIRD for MSX - Versão 1.0.
+FLAPPY BIRD for MSX - Versão 1.4
 (C)2014 Giovanni Nunes <giovanni.nunes@gmail.com>
 
 Este programa e outros arquivos relacionados estão licenciados pela
@@ -7,6 +7,6 @@ bem vindas.
 
 Para compilar o FLAPPY BIRD for MSX você precisará do montador PASMO
 e do GNU MAKE. Utilize "make bin" para produzir um arquivo binário
-que pode ser carregado via BLOAD "FLAPBIRD.BIN",R em um MSX real ou 
+que pode ser carregado via BLOAD "FLAPBIRD.BIN",R em um MSX real ou
 use "make rom" para criar uma imagem ROM para executar em emuladores
 ou gravar em um cartucho.
