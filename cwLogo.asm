@@ -5,15 +5,17 @@
 ;  *
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
-cwLogoLoop: equ videoData               ; posição atual no laço
-cwLogoPrt1: equ videoData+1             ; primeira linha na tela
-cwLogoPrt2: equ videoData+3             ; a segunda linha na tela
-
 cwLogo:
             proc
-
             local cwLogoWait
             local cwLogoData
+            local cwLogoLoop
+            local cwLogoPrt1
+            local cwLogoPrt2
+
+            cwLogoLoop: equ videoData
+            cwLogoPrt1: equ videoData+1
+            cwLogoPrt2: equ videoData+3
 
             ld hl,0
             ld (cwLogoPrt1),hl          ; a primeira linha na tela
@@ -83,7 +85,6 @@ cwLogoWait:
             ld hl,6144+13*32            ; posição inicial
             call FILVRM
 
-cwEndRingLoop:
             jp gplMensaWait             ; economizo meu código :)
 
 cwLogoData:

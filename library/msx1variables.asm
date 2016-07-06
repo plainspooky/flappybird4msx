@@ -1,5 +1,5 @@
 ;
-; MSX1-BIOS SYSTEM VARIABLES 
+; MSX1-BIOS SYSTEM VARIABLES
 ; Version 0.2
 ;
 USRTAB0:	equ 0xF39A			; Endereço da função USR0
@@ -12,7 +12,7 @@ USRTAB6:	equ 0xF3A6			; Endereço da função USR6
 USRTAB7:	equ 0xF3A8			; Endereço da função USR7
 USRTAB8:	equ 0xF3AA			; Endereço da função USR8
 USRTAB9:	equ 0xF3AC			; Endereço da função USR9
-LINL40:		equ 0xF3AD			; Largura da screen 0 (comando WIDTH)
+LINL40:		equ 0xF3AE			; Largura da screen 0 (comando WIDTH)
 LINL32:		equ 0xF3AF			; Largura da screen 1 (comando WIDTH)
 LINLEN:		equ 0xF3B0			; Largura do modo de texto atual
 CRTCNT:		equ 0xF3B1			; Número de linhas nos modos texto

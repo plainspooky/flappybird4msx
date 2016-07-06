@@ -10,7 +10,7 @@ initEnv:
             local palAdjust
             local noPalAdjust
             local charPatterns
-            local charPatterns
+            local charAttributes
             local spritePatterns
 
             call turboMode          ; é um turbo R? pare de sofrer!

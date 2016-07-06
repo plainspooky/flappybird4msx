@@ -45,7 +45,7 @@ ramArea:    equ 0xe000                  ; inicio da área de variáveis
             dw startCode                ; endereço de execução
             db "CW01"                   ; string de identificação
             db __VERSION+48
-            db __RELEASE+64
+            db __RELEASE+65
             ds 6,0
 else
 makeBLOAD:
