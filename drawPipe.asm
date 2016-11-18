@@ -11,6 +11,11 @@ drawPipe:
 
             local drawPipeLoop
             ; ...
+
+            local drawSkyLineBlue
+            local drawSkyLineCyan
+            local drawSkyLine
+
             local tableSeven
             local pipeData
             local holeData
@@ -27,35 +32,30 @@ drawPipeLoop:
 
             inc a
             cp 20
-            jr nz,drawPipeLoop             ; se A<20, ir para DRAWPIPE0
+            jr nz,drawPipeLoop          ; enquanto A<20 vai para drawPipeLoop
 
-            ld hl,framebuff2               ; aponta para o início
+            ld hl,framebuff2            ; aponta para o início do framebuffer
 
             ld a,130                    ; 130,131 : linhas ciano
                                         ; 132,133 : linhas azul
 
-drawSkyPattern:
-DRAWPIPE1:
-            call drawEntireLine
+drawSkyLineCyan:
+            call drawSkyLine
             inc a
             cp 132
-            jr nz,drawSkyPattern
-            ;jr nz,DRAWPIPE1             ; se A!=132, ir para DRAWPIPE1
+            jr nz,drawSkyLineCyan       ; se A!=132, desenha o "céu"
 
-            ld hl,framebuff2+18*7          ; as duas últimas linhas
+            ld hl,framebuff2+18*7       ; as duas últimas linhas
 
-DRAWPIPE2:
-            call drawEntireLine
+drawSkyLineBlue:
+            call drawSkyLine
             inc a
             cp 134
-            jr nz,DRAWPIPE2             ; se A!=133, ir para DRAWPIPE2
+            jr nz,drawSkyLineBlue       ; se A!=133, ir para DRAWPIPE2
 
             ld a,(pipeSize)             ; pego o valor de pipeSize
-
             sla a                       ; multiplico A por 2
-
             ld c,a                      ; jogo na primeira metade de BC e
-
             ld b,0                      ; limpo a outra parte, vai que...
 
             ld hl,tableSeven            ; TABLE7
@@ -80,8 +80,8 @@ DRAWPIPE2:
 
             ret                         ; sai da rotina
 
-drawEntireLine:
-            ld (hl),a                   ; coloca uma das linhas
+drawSkyLine:
+            ld (hl),a                   ; coloca uma das linhas do céu
             ld de,5
             add hl,de                   ; avança mais 5
             ld (hl),a

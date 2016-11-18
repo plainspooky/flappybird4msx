@@ -5,7 +5,7 @@ MAINFILE=main.asm
 OUTFILE=flapbird
 PASMO=pasmo
 RM=rm -f
-MACHINE=
+MACHINE=-machine msx1
 
 .PHONY: bload clean default rom superclean test
 
@@ -14,15 +14,15 @@ default:
 
 rom:
 	${PASMO} -d -v -1 --err \
-			 --equ "TARGET=0" \
-             ${MAINFILE} ${OUTFILE}.rom |\
-        	 tee ${OUTFILE}.log 2> ${OUTFILE}.err
+		--equ "TARGET=0" \
+	 	${MAINFILE} ${OUTFILE}.rom |\
+	tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
 bload:
 	${PASMO} -d -v -1 --err \
-			 --equ "TARGET=1" \
-		     ${MAINFILE} ${OUTFILE}.bin |\
-			 tee ${OUTFILE}.log 2> ${OUTFILE}.err
+		--equ "TARGET=1" \
+		${MAINFILE} ${OUTFILE}.bin |\
+	tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
 test:
 	${EMULATOR} ${MACHINE} ${OUTFILE}.rom

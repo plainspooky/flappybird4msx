@@ -2,7 +2,7 @@
 ;  Flappy Bird for MSX -- version 1.4;
 ;  The annoying and pathetic bird flapping on your MSX :)
 ;
-;  Copyright 2014-16 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
+;  (C) 2014-2016 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
 ;
 ;  This program is free software; you can redistribute it and/or modify
 ;  it under the terms of the GNU General Public License as published by

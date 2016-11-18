@@ -9,6 +9,6 @@ waitASec:
             proc
             ld a,(JIFFY)
             cp b
-            ret nc                         ; sai da rotina
+            ret z                         ; sai da rotina
             jr waitASec
             endp
