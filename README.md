@@ -13,3 +13,4 @@ computer by BLOAD "FLAPPY BIRD.BIN",R or
 In my [blog](https://giovannireisnunes.wordpress.com/meu-software/flappy-bird-para-msx/) you will find more information about the game and the binaries to be downloaded.
 
 This program and other related files are licensed under terms of GPL (GNU General Public License). Changes, suggestions and improvement are welcomed.
+

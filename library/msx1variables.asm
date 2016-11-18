@@ -1,5 +1,5 @@
 ;
-; MSX1-BIOS SYSTEM VARIABLES
+; MSX1-BIOS SYSTEM VARIABLES 
 ; Version 0.2
 ;
 USRTAB0:	equ 0xF39A			; Endereço da função USR0
@@ -256,7 +256,6 @@ DEVICE:		equ 0xFD99			; Usada para passar um número de dispositivo para uma ROM
 
 ; novos
 CSRSW:		equ 0xFCA9			; Status do cursor (0=desligado, 1-255=ligado?)
-
 
 ; Atualizar com
 ; http://www.msx.org/wiki/System_variables,_code_%26_hooks_in_RAM_after_boot
