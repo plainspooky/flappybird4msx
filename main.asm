@@ -1,5 +1,5 @@
 ;
-;  Flappy Bird for MSX -- version 1.4;
+;  Flappy Bird for MSX -- version 1.5;
 ;  The annoying and pathetic bird flapping on your MSX :)
 ;
 ;  (C) 2014-2016 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
@@ -35,7 +35,6 @@ VOLUME      equ 11                      ; volume da campanhia dos pontos
 MAXU:       equ 12                      ; incremento máximo para a subida
 MAXD:       equ 12                      ; incremendo maximo para a descida
 
-if TARGET=0
 makeROM:
 romSize:    equ 8192                    ; o tamanho que a ROM deve ter
 romArea:    equ 0x4000                  ; minha ROM começa aqui
@@ -47,16 +46,6 @@ ramArea:    equ 0xe000                  ; inicio da área de variáveis
             db __VERSION+48
             db __RELEASE+65
             ds 6,0
-else
-makeBLOAD:
-startArea:  equ 0xc000                  ; o endereço inicial do jogo
-ramArea:    equ 0xe000                  ; inicio da área de variáveis
-            org startArea-7
-            db 0xfe                     ; identifica o arquivo como binário
-            dw startCode                ; endereço inicial
-            dw stopCode                 ; endereço final
-            dw startCode                ; endereço de execução
-endif
 
 startCode:
             call initVar                ; inicializa as variáveis
@@ -93,12 +82,9 @@ gameLoop:
             include "waitASec.asm"
             include "writeFramebuffer.asm"
 
-if TARGET=0
 romPad:
             ds romSize-(romPad-romArea),0
-else
-stopCode:
-endif
+
             end
 ;
 ; MSX rulez a lot!

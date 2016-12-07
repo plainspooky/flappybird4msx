@@ -18,12 +18,6 @@ rom:
 	 	${MAINFILE} ${OUTFILE}.rom |\
 	tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
-bload:
-	${PASMO} -d -v -1 --err \
-		--equ "TARGET=1" \
-		${MAINFILE} ${OUTFILE}.bin |\
-	tee ${OUTFILE}.log 2> ${OUTFILE}.err
-
 test:
 	${EMULATOR} ${MACHINE} ${OUTFILE}.rom
 
