@@ -20,7 +20,7 @@
 ;  MA 02110-1301, USA.
 ;
 __VERSION:  equ 1
-__RELEASE:  equ 5
+__RELEASE:  equ 6
 ;
 ;  >>>  Flappy Bird is a original game released in 2013 by .GEARS  <<<
 ;
@@ -81,6 +81,7 @@ gameLoop:
             include "rotatePipe.asm"
             include "soundBeep.asm"
             include "startScreen.asm"
+            include "threeLdirvm.asm"
             include "turboMode.asm"
             include "updateFramebuffer.asm"
             include "waitASec.asm"

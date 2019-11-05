@@ -48,41 +48,23 @@ noPalAdjust:
             ld a,32
             ld (LINL32),a           ; largura da tela em 32 colunas
 
-            call INIT32             ; entro na SCREEN1
-
-            ld a,(RG0SAV)           ; leio o valor do registro 0
-            or 2
-            ld b,a                  ; o novo valor fica em B
-            ld c,0                  ; e o registrador em C
-            call WRTVDP             ; altero o valor do registro 0
-
+            call INIGRP             ; entra na SCREEN 2
+            
             ld a,(RG1SAV)           ; leio o valor do registro 1
-            and 0xE6                ; também desligo o zoom dos sprites
+            and 0xE3                ; também desligo o zoom dos sprites
             or 2                    ; e ajusto os sprites para 16x16
             ld b,a                  ; B=A
-            inc c
             call WRTVDP             ; altero o valor do registro 1
-
-            ld a,(RG3SAV)           ; leio o valor do registro 3
-            ld b,0x9F
-            inc c
-            inc c
-            call WRTVDP             ; altero o valor do registro 3
-
-            ld a,(RG4SAV)           ; leio o valor do registro 4
-            ld b,0
-            inc c
-            call WRTVDP             ; altero o valor do registro 4
-
+            
             ld bc,2048              ; 2048 bytes a copiar
             ld de,0                 ; tabela de padrões na VRAM
             ld hl,charPatterns     ; localização na RAM
-            call LDIRVM             ; copio a tabela de padrões
+            call threeLdirvm        ; copio a tabela de padrões
 
             ld bc,2048              ; 2048 bytes a copiar
             ld de,8192              ; tabela de atributos na VRAM
             ld hl,charAttributes    ; localização na RAM
-            call LDIRVM             ; copio a tabela de atributos
+            call threeLdirvm        ; copio a tabela de atributos
 
             ld bc,768               ; 768 bytes a copiar
             ld de,14336             ; tabela de sprites na VRAM

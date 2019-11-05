@@ -52,29 +52,34 @@ rotateClouds:
 
             inc a                       ; incremento
             cp 16                       ; é 16?
-            jr nz,rotateClouds             ; se não volto para rotateDecoration0
+            jr nz,rotateClouds          ; se não volto para rotateDecoration0
 
             ld bc,16                    ; os caracteres do CHÃO
             ld de,framebuff3+16
-            ld hl,163*8                 ; caracteres 163 e 164
+            ld hl,4096+163*8            ; caracteres 163 e 164 (no 3º terço)
             call LDIRMV                 ; copio o padrão de solo da VRAM
 
             ld a,(framebuff3+16)
-            ld (framebuff3+32),a           ; pego o primeiro byte, jogo no final
+            ld (framebuff3+32),a        ; pego o primeiro byte, jogo no final
 
             ld a,(framebuff3+17)
-            ld (framebuff3+33),a           ; pego o segundo byte, jogo no final+1
+            ld (framebuff3+33),a        ; pego o segundo byte, jogo no final+1
 
             ld bc,16
             ld de,framebuff3+16
             ld hl,framebuff3+18
             ldir                        ; ajusto para ficar contíguo
 
-            ld bc,32
+            ld bc,16
             ld de,161*8
             ld hl,framebuff3
             call LDIRVM                 ; devolvo o padrão deslocado à VRAM
 
+            ld bc,16
+            ld de,4096+163*8
+            ld hl,framebuff3+16
+            call LDIRVM                 ; devolvo o padrão deslocado à VRAM
+            
             ret                         ; sai da rotina
 
             endp
