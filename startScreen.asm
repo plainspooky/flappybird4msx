@@ -72,6 +72,6 @@ changeToNextLine:
             ret
 
 screenData:
-            incbin "gfx/screen.inc"
+            include "gfx/screen.asm"
 
             endp

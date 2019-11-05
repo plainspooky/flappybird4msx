@@ -76,12 +76,12 @@ noPalAdjust:
             ret                     ; sai da rotina
 
 charPatterns:
-            incbin "gfx/patterns.inc"
+            include "gfx/patterns.asm"
 
 charAttributes:
-            incbin "gfx/attributes.inc"
+            include "gfx/attributes.asm"
 
 spritePatterns:
-            incbin "gfx/sprites.inc"
+            include "gfx/sprites.asm"
 
             endp
