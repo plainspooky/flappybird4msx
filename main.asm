@@ -1,8 +1,8 @@
 ;
-;  Flappy Bird for MSX -- version 1.5;
+;  Flappy Bird for MSX -- version 1.E
 ;  The annoying and pathetic bird flapping on your MSX :)
 ;
-;  (C) 2014-2016 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
+;  (C) 2014-2019 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
 ;
 ;  This program is free software; you can redistribute it and/or modify
 ;  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 ;  MA 02110-1301, USA.
 ;
 __VERSION:  equ 1
-__RELEASE:  equ 4
+__RELEASE:  equ 5
 ;
 ;  >>>  Flappy Bird is a original game released in 2013 by .GEARS  <<<
 ;
@@ -52,11 +52,15 @@ startCode:
             call initEnv                ; inicializa o ambiente do jogo
             call cwLogo                 ; chama a animação da abertura
             call gplMensa               ; exibe o aviso da GNU/GPL
+
+            call clearScore             ; zera a pontuação
 gameLoop:
-            ld hl,-5
-            ld (score),hl               ; "zero" a pontuação
             call prepareScreen          ; preparo a tela
             call startScreen            ; menu principal
+            
+            call clearScore             ; zera a pontuação
+            call printScore             ; e atualiza a pontuação na tela
+            
             call game                   ; e que o jogo comece!
             jr gameLoop                 ; volta para o laço do jogo
 

@@ -42,6 +42,7 @@ prepareScreen:
             ld hl,hiScoreText       ; padrão da string
             call LDIRVM             ; copio na VRAM
 
+            ld hl,(score)
             call printScore         ; aproveito e escrevo a pontuação
 
             ld a,165                ; o caracter do solo

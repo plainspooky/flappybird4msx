@@ -103,7 +103,7 @@ checkCollision:
 
             ld a,(framebuff1+11)        ; verifico se em (11,0) há um caracter
             cp 143                      ; específico de cano (143)
-            call z,printScore           ; Se for, é hora de pontuar.
+            call z,incrementScore       ; Se for, é hora de pontuar.
 
             ld a,(ringRing)             ; verifica se é hora momento de tocar
             cp 0                        ; a campainha da pontuação

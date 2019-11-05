@@ -7,17 +7,35 @@
 ;  *
 ;  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 ;
-printScore:
+clearScore:
             proc
-            local printHiScore
 
+            ld hl,0                     ; zera o valor da pontuação
+            ld (score),hl               ; armazeno o novo valor
+            
+            ret                         ; sai da rotina
+            endp 
+
+incrementScore:
+            proc
+            
             ld hl,(score)               ; recupero o valor atual da pontuação
         rept 5
             inc hl                      ; incremento a pontuação em +5
         endm
             ld (score),hl               ; armazeno a pontuação
-            ld de,framebuff3            ; área temporária para escrever
+            
+            call printScore             ; atualiza na tela a pontuação
+            
+            ret                         ; sai da rotina
+            endp 
 
+printScore:
+            proc
+            local printHiScore
+            
+            ld de,framebuff3            ; área temporária para escrever
+            
             call printNumber            ; escrevo os números lá
 
             ld bc,5                     ; até 5 dígitos
