@@ -17,8 +17,6 @@ initEnv:
 
             call BEEP               ; bipo (e zero os registros do PSG)
 
-            call DISSCR             ; desligo a exibição da tela
-
             ld a,(JIFFY+1)          ; inicializo a semente do meu gerador
             ld (rndSeed),a          ; de números pseudo-aleatórios
 
@@ -50,6 +48,8 @@ noPalAdjust:
 
             call INIGRP             ; entra na SCREEN 2
             
+            call DISSCR             ; desliga a tela
+            
             ld a,(RG1SAV)           ; leio o valor do registro 1
             and 0xE3                ; também desligo o zoom dos sprites
             or 2                    ; e ajusto os sprites para 16x16
@@ -70,8 +70,6 @@ noPalAdjust:
             ld de,14336             ; tabela de sprites na VRAM
             ld hl,spritePatterns    ; localização na RAM
             call LDIRVM             ; copio a tabela de sprites
-
-            call ENASCR             ; religo a tela
 
             ret                     ; sai da rotina
 

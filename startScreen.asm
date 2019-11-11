@@ -28,9 +28,9 @@ drawScreen:
             inc a                       ; incremento A
             inc hl                      ; incremento a posição
             cp 173                      ; é 173?
-            call z,changeToNextLine         ; mudo de linha
+            call z,changeToNextLine     ; mudo de linha
             cp 177                      ; é 177?
-            jr nz,drawScreen          ; se não for volto ao laço
+            jr nz,drawScreen            ; se não for volto ao laço
 
             ld bc,64                    ; o texto "PRESS SPACE TO START"
             ld de,6144+11*32            ; na 11ª linha da tela
@@ -75,3 +75,5 @@ screenData:
             include "gfx/screen.asm"
 
             endp
+
+

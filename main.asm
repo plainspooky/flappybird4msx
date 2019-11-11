@@ -50,6 +50,8 @@ ramArea:    equ 0xe000                  ; inicio da área de variáveis
 startCode:
             call initVar                ; inicializa as variáveis
             call initEnv                ; inicializa o ambiente do jogo
+            call ENASCR                 ; religa tela (desligada em "InitEnv")
+
             call cwLogo                 ; chama a animação da abertura
             call gplMensa               ; exibe o aviso da GNU/GPL
 
