@@ -1,7 +1,6 @@
 CAT=cat
 ECHO=echo
 EMULATOR=openmsx
-MAINFILE=main.asm
 OUTFILE=flapbird
 PASMO=pasmo
 RM=rm -f
@@ -12,10 +11,12 @@ MACHINE=-machine msx1
 default:
 	make rom
 
+bin:
+	${PASMO} -d -v -1 --err __binary.asm ${OUTFILE}.bin |\
+	tee ${OUTFILE}.log 2> ${OUTFILE}.err
+
 rom:
-	${PASMO} -d -v -1 --err \
-		--equ "TARGET=0" \
-	 	${MAINFILE} ${OUTFILE}.rom |\
+	${PASMO} -d -v -1 --err __cartridge.asm ${OUTFILE}.rom |\
 	tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
 test:

@@ -1,8 +1,8 @@
 ;
-;  Flappy Bird for MSX -- version 1.E
+;  Flappy Bird for MSX -- version 1.G
 ;  The annoying and pathetic bird flapping on your MSX :)
 ;
-;  (C) 2014-2019 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
+;  (C) 2014-2020 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
 ;
 ;  This program is free software; you can redistribute it and/or modify
 ;  it under the terms of the GNU General Public License as published by
@@ -19,8 +19,7 @@
 ;  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 ;  MA 02110-1301, USA.
 ;
-__VERSION:  equ 1
-__RELEASE:  equ 6
+
 ;
 ;  >>>  Flappy Bird is a original game released in 2013 by .GEARS  <<<
 ;
@@ -35,19 +34,6 @@ VOLUME      equ 11                      ; volume da campanhia dos pontos
 MAXU:       equ 12                      ; incremento máximo para a subida
 MAXD:       equ 12                      ; incremendo maximo para a descida
 
-makeROM:
-romSize:    equ 8192                    ; o tamanho que a ROM deve ter
-romArea:    equ 0x4000                  ; minha ROM começa aqui
-ramArea:    equ 0xe000                  ; inicio da área de variáveis
-            org romArea
-            db "AB"                     ; identifica como ROM
-            dw startCode                ; endereço de execução
-            db "CW01"                   ; string de identificação
-            db __VERSION+48
-            db __RELEASE+65
-            ds 6,0
-
-startCode:
             call initVar                ; inicializa as variáveis
             call initEnv                ; inicializa o ambiente do jogo
             call ENASCR                 ; religa tela (desligada em "InitEnv")
@@ -56,6 +42,7 @@ startCode:
             call gplMensa               ; exibe o aviso da GNU/GPL
 
             call clearScore             ; zera a pontuação
+
 gameLoop:
             call prepareScreen          ; preparo a tela
             call startScreen            ; menu principal
@@ -88,11 +75,6 @@ gameLoop:
             include "updateFramebuffer.asm"
             include "waitASec.asm"
             include "writeFramebuffer.asm"
-
-romPad:
-            ds romSize-(romPad-romArea),0
-
-            end
 ;
 ; MSX rulez a lot!
 ;
