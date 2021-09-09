@@ -19,7 +19,7 @@ rom:
 	${PASMO} -d -v -1 --err __cartridge.asm ${OUTFILE}.rom |\
 	tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
-test:
+test: rom
 	${EMULATOR} ${MACHINE} ${OUTFILE}.rom
 
 clean:
