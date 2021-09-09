@@ -49,7 +49,8 @@ noPalAdjust:
             call INIGRP             ; entra na SCREEN 2
             
             call DISSCR             ; desliga a tela
-            
+           
+            ld c,1                  ; registrador 1 do VDP 
             ld a,(RG1SAV)           ; leio o valor do registro 1
             and 0xE3                ; também desligo o zoom dos sprites
             or 2                    ; e ajusto os sprites para 16x16
@@ -58,12 +59,14 @@ noPalAdjust:
             
             ld bc,2048              ; 2048 bytes a copiar
             ld de,0                 ; tabela de padrões na VRAM
-            ld hl,charPatterns     ; localização na RAM
+            ld hl,charPatterns      ; localização na RAM
+
             call threeLdirvm        ; copio a tabela de padrões
 
             ld bc,2048              ; 2048 bytes a copiar
             ld de,8192              ; tabela de atributos na VRAM
             ld hl,charAttributes    ; localização na RAM
+
             call threeLdirvm        ; copio a tabela de atributos
 
             ld bc,768               ; 768 bytes a copiar
