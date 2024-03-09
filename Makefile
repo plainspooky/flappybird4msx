@@ -6,25 +6,25 @@ PASMO=pasmo
 RM=rm -f
 MACHINE=-machine msx1
 
-.PHONY: bload clean default rom superclean test
+.PHONY: clean default rom superclean test
 
 default:
 	make rom
 
 bin:
-	${PASMO} -d -v -1 --err __binary.asm ${OUTFILE}.bin |\
+	${PASMO} -d -v -1 --err __binary.asm output/${OUTFILE}.bin |\
 	tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
 rom:
-	${PASMO} -d -v -1 --err __cartridge.asm ${OUTFILE}.rom |\
+	${PASMO} -d -v -1 --err __cartridge.asm output/${OUTFILE}.rom |\
 	tee ${OUTFILE}.log 2> ${OUTFILE}.err
 
 test: rom
-	${EMULATOR} ${MACHINE} ${OUTFILE}.rom
+	${EMULATOR} ${MACHINE} output/${OUTFILE}.rom
 
 clean:
-	${RM} -f ${OUTFILE}.bin ${OUTFILE}.rom 2>/dev/null
+	${RM} -f output/${OUTFILE}.bin output/${OUTFILE}.rom 2>/dev/null
 
 superclean:
-	${RM} -f ${OUTFILE}.bin ${OUTFILE}.err ${OUTFILE}.log ${OUTFILE}.rom 2>/dev/null
+	${RM} -f output/${OUTFILE}.bin output/${OUTFILE}.rom ${OUTFILE}.log ${OUTFILE}.err 2>/dev/null
 
