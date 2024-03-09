@@ -1,28 +1,24 @@
 ;
-;  Flappy Bird for MSX -- version 1.G
-;  The annoying and pathetic bird flapping on your MSX :)
+;   Flappy Bird for MSX
+;   The annoying and pathetic bird flapping on your MSX :)
+;   Copyright (C) 2014-2024 Giovanni Nunes <giovanni.nunes@gmail.com>
 ;
-;  (C) 2014-2020 Giovanni dos Reis Nunes <giovanni.nunes@gmail.com>
+;   This program is free software: you can redistribute it and/or modify
+;   it under the terms of the GNU General Public License as published by
+;   the Free Software Foundation, either version 3 of the License, or
+;   (at your option) any later version.
 ;
-;  This program is free software; you can redistribute it and/or modify
-;  it under the terms of the GNU General Public License as published by
-;  the Free Software Foundation; either version 2 of the License, or
-;  (at your option) any later version.
+;   This program is distributed in the hope that it will be useful,
+;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;   GNU General Public License for more details.
 ;
-;  This program is distributed in the hope that it will be useful,
-;  but WITHOUT ANY WARRANTY; without even the implied warranty of
-;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;  GNU General Public License for more details.
+;   You should have received a copy of the GNU General Public License
+;   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
-;  You should have received a copy of the GNU General Public License
-;  along with this program; if not, write to the Free Software
-;  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-;  MA 02110-1301, USA.
+;   >>>  Flappy Bird is a original game released in 2013 by .GEARS  <<<
 ;
 
-;
-;  >>>  Flappy Bird is a original game released in 2013 by .GEARS  <<<
-;
             include "library/msx1bios.asm"
             include "library/msx1variables.asm"
             include "library/msx1hooks.asm"
@@ -30,7 +26,7 @@
 PAL:        equ  5                      ; 1/10s em 50Hz (PAL-B/G/N)
 NTSC:       equ  6                      ; 1/10s em 60Hz (NTSC & PAL-M)
 GAP:        equ  6                      ; espaço entre os canos
-VOLUME      equ 11                      ; volume da campanhia dos pontos
+VOLUME:     equ 11                      ; volume da campanhia dos pontos
 MAXU:       equ 12                      ; incremento máximo para a subida
 MAXD:       equ 12                      ; incremendo maximo para a descida
 

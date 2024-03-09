@@ -17,7 +17,7 @@ gplMensa:
             ld de,gplMensaText-1        ; emdereço da mensagem, ou quase
 
 gplMensaStart:
-            ld hl,6144+23*32+3          ; posição inicial na tela; C=0, L=23
+            ld hl,6144+23*32            ; posição inicial na tela; C=0, L=23
 
 gplMensaPrint:
             inc de                      ; incremento DE
@@ -43,7 +43,7 @@ gplMensaNewLine:
             ld hl,gplBuffer             ; armazenado em videoData
             call LDIRVM                 ; copio para a VRAM
 
-            ld a,32                     ; caracter de espaço
+            ld a," "                    ; caracter de espaço
             ld bc,32                    ; 32 caracteres (uma linha)
             ld hl,6144+23*32            ; em (0,23)
             call FILVRM                 ; preencho a VRAM
@@ -67,28 +67,24 @@ gplMensaText:
             db 0,0,0,0,0,0,0,0,0,0,0
             db "FLAPPY BIRD for MSX "
             db 48+__VERSION,".",64+__RELEASE,0
-            db "(c)2014-2019 by Crunchworks",0
+            db "(c)2014-2024 by Crunchworks",0
             db 0
-            db "it and/or modify it under",0
-            db "This program is free soft-",0
-            db "ware; you can redistribute",0
-            db "the terms of the GNU Gen-",0
-            db "eral Public License as",0
-            db "published by the Free",0
-            db "Software Foundation; ei-",0
-            db "ther version 2 of the Li-",0
-            db "cense, or (at your option)",0
-            db "any later version.",0
+            db "This program is free software:", 0
+            db "you can redistribute it and/or", 0
+            db "modify it under the terms of the", 0
+            db "GNU General Public License as", 0
+            db "published by the Free Software", 0
+            db "Foundation, either version 3 of", 0
+            db "the License, or (at your option)", 0
+            db "any later version.", 0
             db 0
-            db "This program is distrib-",0
-            db "uted in the hope that it",0
-            db "will be useful, but WITH-",0
-            db "OUT ANY WARRANTY; without",0
-            db "even the implied warranty",0
-            db "of MERCHANTABILITY or FIT-",0
-            db "NESS FOR A PARTICULAR PUR-",0
-            db "POSE. See the GNU General",0
-            db "Public License for more",0
-            db "details.",1
+            db "This program is distributed in", 0
+            db "the hope that it will be useful,", 0
+            db "but WITHOUT ANY WARRANTY; with-", 0
+            db "out even the implied warranty of",0
+            db "MERCHANTABILITY or FITNESS FOR A",0
+            db "PARTICULAR PURPOSE.  See the GNU", 0
+            db "General Public License for more", 0
+            db "details.",0,0,1
 
             endp
